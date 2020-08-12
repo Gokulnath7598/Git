@@ -1,0 +1,591 @@
+--EXEC sp_MSforeachtable 'TRUNCATE TABLE ?'
+
+
+
+
+
+
+
+
+
+
+
+
+insert into dbo."AutoRemediationActionType" values ('1','Delete','Delete an email from end users inbox');
+insert into dbo."AutoRemediationActionType" values ('2','Move to folder','Move an email to given folder');
+insert into dbo."AutoRemediationActionType" values ('3','Quarantine','Delete an email from end users inbox and put it into Symantec Email Quarantine');
+insert into dbo."AutoRemediationCustomers" values ('1','11209','O365TestTenantId','O365TestTenantName','2017-10-20','2017-10-20','arulkumar_a','localhost');
+insert into dbo."AutoRemediationDomains" values ('messagelabs.net','1','2017-10-20','2017-10-20','arulkumar_a','localhost');
+insert into dbo."CTPEmailList" values ('1','11209','','globaldonotprotecteduser1@messagelabs.net','False','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','');
+insert into dbo."CTPEmailList" values ('2','11209','','globaldonotprotecteduser1@messagelabs.co.uk','False','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','');
+insert into dbo."CTPEmailList" values ('3','37549','','globalprotecteduser1@mqatestdomain2.com','True','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','');
+insert into dbo."CTPEmailList" values ('4','37549','','globaldonotprotecteduser1@mllive1.com','True','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','');
+insert into dbo."AllDomains" values ('20369','radiob.star.co.uk','10024','2001-04-30 16:09:35.657','2004-11-05 09:12:52.010','','ngibbs','INSIGHT02','N');
+insert into dbo."AllDomains" values ('20370','radioa.messagelabs.com','10024','2001-04-30 16:11:19.340','2004-07-15 13:42:44.570','','demo0','INSIGHT02','N');
+insert into dbo."AllDomains" values ('27911','radioc.star.co.uk','10024','2001-11-30 22:50:38.793','2008-12-04 08:24:43.750','','dstephens','INSIGHT02','N');
+insert into dbo."AllDomains" values ('32947','radiod.messagelabs.com','10024','2002-06-05 10:22:42.990','2008-12-04 08:25:24.207','','dstephens','INSIGHT02','N');
+insert into dbo."AllDomains" values ('55471','spamq.messagelabs.com','10024','2004-05-04 15:52:20.707','2009-09-23 10:57:52.070','','ldyer','PAINSWEBLD1001','N');
+insert into dbo."AllDomains" values ('59224','testdomain.com','10024','2004-07-13 21:56:12.627','2009-05-12 14:13:01.387','','jphelpstead','MGMT-UK-TS1','N');          
+insert into dbo."AllDomains" values ('133663','nospamplease.com','10024','2007-11-02 18:34:12.853','2009-02-26 09:34:14.857','','jheritage','INSIGHT02','N');
+insert into dbo."AllDomains" values ('98','globalequipment.co uk','11209','2000-03-25 08:29:27.217','2002-08-08 16:34:01.020','','skinsman','INSIGHT02','N');
+insert into dbo."AllDomains" values ('11000','messagelabs.co.uk','11209','2000-03-03 11:59:00.000','2010-03-22 11:00:06.780','','acharrett','PAINSWEBLD1001','N');
+insert into dbo."AllDomains" values ('11001','messagelabs.net','11209','2000-03-03 11:59:00.000','2010-03-22 11:00:52.400','','acharrett','PAINSWEBLD1001','N');
+insert into dbo."AllDomains" values ('21591','pop.messagelabs.com','11209','2001-05-11 17:46:22.153','2006-03-10 09:14:01.727','','acharrett','INSIGHT02','N');
+insert into dbo."AllDomains" values ('21592','nobanners.messagelabs.com','11209','2001-05-11 17:46:22.153','2006-03-09 14:59:13.620','','acharrett','INSIGHT02','N');
+insert into dbo."AllDomains" values ('182104','messagelabs.com.au','11209','2009-07-14 10:14:32.673','2009-07-14 10:14:36.970','','acharrett','PAINSWEBLD1001','N');
+insert into dbo."AllDomains" values ('185394','ecdemo.info','11209','2009-09-07 09:04:41.580','2009-10-20 13:38:07.777','','acharrett','PAINSWEBLD1001','N');
+insert into dbo."AllDomains" values ('210743','serviceintelligence.messagelabs.com','11209','2010-05-18 14:34:13.497','2010-05-18 14:39:11.457',' ','dstephens','PAINSWEBLD1001','N');
+insert into dbo."AllDomains" values ('120520','qatestdomain2.com','37549','2007-05-10 10:19:38.117','2008-08-09 17:37:56.987','','colins','INSIGHT02','N');
+insert into dbo."AllDomains" values ('120521','qatestdomain3.com','37549','2007-05-10 10:19:41.553','2008-08-01 07:39:35.553','','colins','INSIGHT02','N');
+insert into dbo."AllDomains" values ('120666','qatestdomain4.com','37549','2007-05-12 13:12:33.320','2008-08-01 07:40:50.010','','colins','INSIGHT02','N');
+insert into dbo."AllDomains" values ('158045','ssip-qatest.swr','37549','2008-08-09 18:35:34.750','2008-08-09 18:35:36.470','','swright','INSIGHT02','N');
+insert into dbo."AllDomains" values ('179264','mllive1.com','37549','2009-06-16 10:56:22.827','2009-06-17 10:34:38.190','','colins','INSIGHT02','N');
+insert into dbo."AllDomains" values ('131065','qaresellertest.com','40421','2007-10-04 16:24:38.017','2008-09-12 17:50:36.800','','colins','INSIGHT02','N');
+insert into dbo."AllDomains" values ('158046','ssip-qare.swr','40421','2008-08-09 18:42:19.753','2008-08-09 18:42:21.347','','swright','INSIGHT02','N');
+insert into dbo."AllDomains" values ('143944','demo1.messagelabs.com','43558','2008-03-10 10:47:34.560','2008-03-10 10:47:36.857','','sbaldwin','INSIGHT02','N');
+insert into dbo."AllDomains" values ('143945','demo2.messagelabs.com','43558','2008-03-10 10:47:46.590','2010-01-28 13:26:10.240','','vcurtis','PAINSWEBLD1001','N');
+insert into dbo."AllDomains" values ('146676','demo3.messagelabs.com','43558','2008-04-11 11:42:51.463','2008-04-11 11:42:52.870','','mtoshack','INSIGHT02','N');
+insert into dbo."AllDomains" values ('146677','demo4.messagelabs.com','43558','2008-04-11 11:43:31.403','2008-04-11 11:43:32.810','','mtoshack','INSIGHT02','N');
+insert into dbo."AllDomains" values ('146860','demo5.messagelabs.com','43558','2008-04-14 13:46:56.390','2009-08-21 12:29:09.250','','jheritage','PAINSWEBLD1001','N');
+insert into dbo."AllDomains" values ('146861','hostedtest.messagelabs.com','23464','2008-04-14 13:46:56.390','2009-08-21 12:29:09.250',' ','Test','Test','N');
+insert into dbo."ATPService" values('1','10024','20369','2001-04-30 16:09:35.657','2004-11-05 09:12:52.010','ngibbs','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('2','10024','20370','2001-04-30 16:11:19.340','2004-07-15 13:42:44.570','demo','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('3','10024','27911','2001-11-30 22:50:38.793','2008-12-04 08:24:43.750','dstephens','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('4','10024','32947','2002-06-05 10:22:42.990','2008-12-04 08:25:24.207','dstephens','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('5','10024','55471','2004-05-04 15:52:20.707','2009-09-23 10:57:52.070','ldyer','PAINSWEBLD1001','True','5','N');
+insert into dbo."ATPService" values('6','10024','59224','2004-07-13 21:56:12.627','2009-05-12 14:13:01.387','jphelpstead','MGMT-UK-TS1','True','5','N');
+insert into dbo."ATPService" values('7','10024','133663','2007-11-02 18:34:12.853','2009-02-26 09:34:14.857','jheritage','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('8','11209','98','2000-03-25 08:29:27.217','2002-08-08 16:34:01.020','skinsman','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('9','11209','11000','2000-03-03 11:59:00.000','2010-03-22 11:00:06.780','acharrett','PAINSWEBLD1001','True','5','N');
+insert into dbo."ATPService" values('10','11209','11001','2000-03-03 11:59:00.000','2010-03-22 11:00:52.400','acharrett','PAINSWEBLD1001','True','5','N');
+insert into dbo."ATPService" values('11','11209','21591','2001-05-11 17:46:22.153','2006-03-10 09:14:01.727','acharrett','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('12','11209','21592','2001-05-11 17:46:22.153','2006-03-09 14:59:13.620','acharrett','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('13','11209','182104','2009-07-14 10:14:32.673','2009-07-14 10:14:36.970','acharrett','PAINSWEBLD1001','True','5','N');
+insert into dbo."ATPService" values('14','11209','185394','2009-09-07 09:04:41.580','2009-10-20 13:38:07.777','acharrett','PAINSWEBLD1001','True','5','N');
+insert into dbo."ATPService" values('15','11209','210743','2010-05-18 14:34:13.497','2010-05-18 14:39:11.457','dstephens','PAINSWEBLD1001','True','5','N');
+insert into dbo."ATPService" values('16','37549','120520','2007-05-10 10:19:38.117','2008-08-09 17:37:56.987','colins','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('17','37549','120521','2007-05-10 10:19:41.553','2008-08-01 07:39:35.553','colins','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('18','37549','120666','2007-05-12 13:12:33.320','2008-08-01 07:40:50.010','colins','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('19','37549','158045','2008-08-09 18:35:34.750','2008-08-09 18:35:36.470','swright','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('20','37549','179264','2009-06-16 10:56:22.827','2009-06-17 10:34:38.190','colins','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('21','40421','131065','2007-10-04 16:24:38.017','2008-09-12 17:50:36.800','colins','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('22','40421','158046','2008-08-09 18:42:19.753','2008-08-09 18:42:21.347','swright','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('23','43558','143944','2008-03-10 10:47:34.560','2008-03-10 10:47:36.857','sbaldwin','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('24','43558','143945','2008-03-10 10:47:46.590','2010-01-28 13:26:10.240','vcurtis','PAINSWEBLD1001','True','5','N');
+insert into dbo."ATPService" values('25','43558','146676','2008-04-11 11:42:51.463','2008-04-11 11:42:52.870','mtoshack','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('26','43558','146677','2008-04-11 11:43:31.403','2008-04-11 11:43:32.810','mtoshack','INSIGHT02','True','5','N');
+insert into dbo."ATPService" values('27','43558','146860','2008-04-14 13:46:56.390','2009-08-21 12:29:09.250','jheritage','PAINSWEBLD1001','True','5','N');
+insert into dbo."CustomerService" values('10024','1','Y ','2011-01-01 ','2011-01-01 ','9999-12-31 23:59:59','test','test1');
+insert into dbo."CustomerService" values('10024','2','Y ','2011-01-01 ','2011-01-01 ','9999-12-31 23:59:59','test','test1');
+insert into dbo."CustomerService" values('10024','3','Y ','2011-01-01 ','2011-01-01 ','9999-12-31 23:59:59','test','test1');
+insert into dbo."CustomerService" values('10024','4','Y ','2011-01-01 ','2011-01-01 ','9999-12-31 23:59:59','test','test1');
+insert into dbo."CustomerService" values('10024','5','Y ','2011-01-01 ','2011-01-01 ','9999-12-31 23:59:59','test','test1');
+insert into dbo."CustomerService" values('10024','6','Y ','2011-01-01 ','2011-01-01 ','9999-12-31 23:59:59','test','test1');
+insert into dbo."CustomerService" values('10024','7','Y ','2011-01-01 ','2011-01-01 ','9999-12-31 23:59:59','test','test1');
+insert into dbo."CustomerService" values('10024','8','Y ','2011-01-01 ','2011-01-01 ','9999-12-31 23:59:59','test','test1');
+insert into dbo."CustomerService" values('10024','9','Y ','2011-01-01 ','2011-01-01 ','9999-12-31 23:59:59','test','test1');
+insert into dbo."CustomerService" values('10024','10','Y ','2011-01-01 ','2011-01-01 ','9999-12-31 23:59:59','test','test1');
+insert into dbo."CustomerService" values('10024','11','Y ','2011-01-01 ','2011-01-01 ','9999-12-31 23:59:59','test','test1');
+insert into dbo."CustomerService" values('10024','12','N ','2005-11-01 10:36:21.133','2006-11-06 15:25:07.650','9999-12-31 23:59:59.000','wsealey ','INSIGHT02');
+insert into dbo."CustomerService" values('10024','15','Y ','2006-06-26 08:39:08.840','2006-06-26 08:39:08.840','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('10024','16','Y ','2006-06-26 08:39:08.840','2006-06-26 08:39:08.840','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('10024','25','Y ','2006-06-26 08:39:08.840','2006-06-26 08:39:08.840','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('11209','12','N ','2008-08-15 14:54:54.037','2008-08-15 14:54:54.037','9999-12-31 23:59:59.000','vcurtis ','INSIGHT02');
+insert into dbo."CustomerService" values('11209','15','Y ','2006-06-27 12:13:14.627','2006-06-27 12:13:14.627','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('11209','16','Y ','2006-06-27 12:13:14.657','2006-06-27 12:13:14.657','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('11209','25','Y ','2006-06-27 12:13:14.627','2006-06-27 12:13:14.627','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('11209','28','Y ','2006-06-27 12:13:14.627','2006-06-27 12:13:14.627','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('11209','29','Y ','2006-06-27 12:13:14.627','2006-06-27 12:13:14.627','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('11209','11','Y ','2014-09-01 12:13:14.627','2014-09-02 12:13:14.627','9999-12-31 23:59:59.000','test','test1');
+insert into dbo."CustomerService" values('37549','12','Y ','2007-05-11 12:52:48.643','2007-05-11 12:52:48.643','9999-12-31 23:59:59.000','colins','INSIGHT02');
+insert into dbo."CustomerService" values('37549','15','Y ','2007-05-11 12:58:05.797','2007-05-11 12:58:05.797','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('37549','16','Y ','2007-05-11 12:58:05.797','2007-05-11 12:58:05.797','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('37549','28','Y ','2007-05-11 12:58:05.797','2007-05-11 12:58:05.797','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('40421','15','N ','2007-11-08 11:34:30.320','2007-11-08 11:34:30.320','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('40421','16','N ','2007-11-08 11:34:30.320','2007-11-08 11:34:30.320','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('40421','25','N ','2007-11-08 11:34:30.320','2007-11-08 11:34:30.320','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('40421','28','N ','2007-11-08 11:34:30.320','2007-11-08 11:34:30.320','9999-12-31 23:59:59.000','Unknown ','Unknown');
+insert into dbo."CustomerService" values('43558','15','Y ','2008-03-10 11:21:54.283','2010-12-14 17:27:05.097','9999-12-31 23:59:59.000','User=185915','INSIGHT2');
+insert into dbo."CustomerService" values('43558','16','Y ','2008-03-10 11:21:54.283','2010-12-14 17:27:05.097','9999-12-31 23:59:59.000','User=185915','INSIGHT2');
+insert into dbo."CustomerService" values('43558','29','Y ','2008-03-10 11:21:54.283','2010-12-14 17:27:05.097','9999-12-31 23:59:59.000','User=185915','INSIGHT2');
+insert into dbo."CustomerService" values('11209','4','Y ','2004-07-21 10:17:54.231','2006-10-27 13:53:02.501','9999-12-31 23:59:59.000','User=1','INSIGHT02');
+insert into dbo."CustomerService" values('37549','4','Y ','2004-07-21 10:17:54.232','2006-10-27 13:53:02.502','9999-12-31 23:59:59.000','User=1','INSIGHT02');
+insert into dbo."CustomerService" values('40421','4','Y ','2004-07-21 10:17:54.233','2006-10-27 13:53:02.503','9999-12-31 23:59:59.000','User=1','INSIGHT02');
+insert into dbo."CustomerService" values('11209','35','Y ','2004-07-21 10:17:54.233','2006-10-27 13:53:02.503','9999-12-31 23:59:59.000','User=1','INSIGHT02');
+insert into dbo."CustomerService" values('10024','35','Y ','2004-07-21 10:17:54.233','2006-10-27 13:53:02.503','9999-12-31 23:59:59.000','User=1','INSIGHT02');
+insert into dbo."CustomerService" values('37549','35','Y ','2004-07-21 10:17:54.233','2006-10-27 13:53:02.503','9999-12-31 23:59:59.000','User=1','INSIGHT02');
+insert into DKIMconfig values('1' ,'11209' ,'11000','True' ,'2016-01-07 02:15:22.580','2016-01-07 02:15:22.580','User=1','INSIGHT2');
+insert into DKIMconfig values('2','23464','146861','True','2016-01-07 02:15:22.580','2016-01-07 02:15:22.580','User=1','INSIGHT2' );
+insert into DKIMKeys values('1',' 1',' Test Selector 1 ','True','PK 1' ,'EPK 1','False','2048','2016-01-07 02:15:22.580','2016-01-07 02:15:22.580','User=1','INSIGHT2','False','1','2');
+insert into DKIMKeys values('2 ','1','Test Selector 2','False','PK 2','EPK 2','False','2048' ,'2016-01-07 02:15:22.580','2016-01-07 02:15:22.580','User=1','INSIGHT2','False','7','8' );
+insert into DKIMKeys values('3','1','Test Selector 3','False','PK 3','EPK 3','False','2048','2016-01-07 02:15:22.580','2016-01-07 02:15:22.580','User=1','INSIGHT2','False','6','5');
+insert into DKIMKeys values('4','2','Hosted Test Selector 1','True','Hosted PK 1 ','Hosted EPK 1','False','2048','2016-01-07 02:15:22.580','2016-01-07 02:15:22.580','User=1','INSIGHT2','False','3','6');
+insert into DKIMKeys values('5','2','Hosted Test Selector 2','False','Hosted PK 2','Hosted EPK 2','False','2048','2016-01-07 02:15:22.580','2016-01-07 02:15:22.580','User=1','INSIGHT2','False','2','4');
+insert into DKIMTemplate values('33','v=DKIM1; k=rsa; t=s; p={0}','2017-09-18 15:23:36.440','2017-09-18 15:23:36.440','Initial Load	','Initial Load');
+insert into CustomDSN values('32', '10024','20369','12','72','2019-01-08','2014-10-01','9999-12-31 23:59:59.000','test','test1');
+insert into CustomDSN values('2','10024','20370','24','48', '2019-01-08', '2014-10-01', '9999-12-31 23:59:59.000','test','test1');
+insert into CustomDSN values('29', '40421','32947','40','80','2019-01-08','2014-10-01','9999-12-31 23:59:59.000','test','test1');
+insert into CustomDSN values('35', '40421','','50','72','2019-01-08','2014-10-01','9999-12-31 23:59:59.000','test','test1');
+insert into CustomDSNWarningSchedule values('1','1','10', 'I ','2019-01-08','2014-10-01','9999-12-31 23:59:59.000','test','test1');	
+insert into CustomDSNWarningSchedule values('2','2','10', 'I ','2019-01-08','2014-10-01','9999-12-31 23:59:59.000','test','test1');
+insert into CustomDSNWarningSchedule values('3','2','20', 'I ','2019-01-08','2014-10-01','9999-12-31 23:59:59.000','test','test1');
+insert into CustomDSNWarningSchedule values('4','1','30', 'I ','2019-01-08','2014-10-01','9999-12-31 23:59:59.000','test','test1');
+insert into CustomDSNWarningSchedule values('5','2','20', 'o ','2019-01-08','2014-10-01','9999-12-31 23:59:59.000','test','test1');
+insert into CustomDSNWarningSchedule values('6','2','30', 'o ','2019-01-08','2014-10-01','9999-12-31 23:59:59.000','test','test1');
+insert into CustomDSNWarningSchedule values('7','2','40', 'o ','2019-01-08','2014-10-01','9999-12-31 23:59:59.000','test','test1');
+insert into CustomDSNWarningSchedule values('10','6','75', 'o ','2019-01-08','2014-10-01','9999-12-31 23:59:59.000','test','test1');
+insert into CustomDSNWarningSchedule values('12','6','100', 'I ','2019-01-08','2014-10-01','9999-12-31 23:59:59.000','test','test1');	
+insert into CustomDSNWarningSchedule values('14','6','150', 'I ','2019-01-08','2014-10-01','9999-12-31 23:59:59.000','test','test1');
+insert into CTPIsolationSettings values('1 ','11209','5','False','True', '2018-01-21 04:22:06.227','2018-02-17 11:06:33.517','User=197042','PRUIWEBLD1001');
+insert into CTPIsolationSettings values('2 ','11209',' 11000','True','True', '2018-01-21 04:22:06.227','2018-02-17 11:06:33.517','User=197042','PRUIWEBLD1001');
+insert into ETIAttachmentEmailList values('1','11209','8','globaldonotprotecteduser1@messagelabs.net','False', '2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','7');       
+insert into ETIAttachmentEmailList values('2','11209','10','globaldonotprotecteduser1@messagelabs.net','False', '2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','7');
+insert into ETIAttachmentEmailList values('3','37549','8','globaldonotprotecteduser1@messagelabs.net','False', '2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','7');  
+insert into ETIAttachmentEmailList values('4','37549','11000','globaldonotprotecteduser1@messagelabs.net','False', '2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','7');                   
+insert into ETIAttachmentEmailList values('6','11209','158045','localdonotprotecteduser1@ssip-qatest.swr','False', '2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','7');       
+insert into ETIAttachmentEmailList values('8','37549','26282639','globaldonotprotecteduser1@messagelabs.net','False', '2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','7'); 
+insert into ETIAttachmentEmailList values('9','37549','126386','globaldonotprotecteduser1@messagelabs.net','False', '2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','7');       
+insert into ETIAttachmentSettings values('142','11209','7','False','True','True',' 14 ','True','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False');      
+insert into ETIAttachmentSettings values('231','11209','110000','False','True','True',' 14 ','True','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False');      
+insert into ETIAttachmentSettings values('282','11209','110001','False','True','True',' 14 ','True','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False');      
+insert into CustomerHostedMailProvider values ('1','23464','1','','2017-10-20 16:11:17','Test','Test Host','');
+insert into LDAPGroup values ('617341' ,'43558', 'acme\Domain Users','9999-12-31 23:59:59.000');
+insert into LDAPGroup values ('617342' ,'43558', 'acme\Domain Users','9999-12-31 23:59:59.000');
+insert into LDAPGroup values ('1103976' ,'43558', 'acme\Germany Users','9999-12-31 23:59:59.00');
+insert into LDAPGroup values ('1103977' ,'43558', 'acme\Japan Users','9999-12-31 23:59:59.00');
+insert into LDAPGroup values ('1103978' ,'43558', 'acme\UK Users','9999-12-31 23:59:59.00');
+insert into LDAPGroup values ('1103979' ,'43558', 'acme\US Users','9999-12-31 23:59:59.00');
+insert into LDAPGroup values ('1602359' ,'37549 ', 'net1\Remote Desktop Users','9999-12-31 23:59:59.00');
+insert into LDAPGroup values ('1602365' ,'37549 ', 'cnet1\Enterprise Admins','9999-12-31 23:59:59.00');
+insert into LDAPGroup values ('1602366' ,'37549 ', 'cnet1\INTERNET_WEB_SECURITY_BLOCK_SOCIAL_NETWORKING_WEBSITES','9999-12-31 23:59:59.00');
+insert into LDAPGroup values ('1602368' ,'37549 ', 'cnet1\ringo3','9999-12-31 23:59:59.00');
+insert into LDAPGroup values ('1602370' ,'37549 ', 'cnet1\Administrators','9999-12-31 23:59:59.00');
+insert into LDAPGroup values ('1602385' ,'37549 ', 'cnet1\Domain Admins','9999-12-31 23:59:59.00');
+insert into LDAPGroup values ('1602386' ,'37549 ', 'cnet1\ringo4','9999-12-31 23:59:59.00');
+insert into LDAPGroup values ('1602395' ,'37549 ', 'cnet1\Ringo1','9999-12-31 23:59:59.00');
+insert into LDAPGroup values ('1602396' ,'37549 ', 'cnet1\Ringo2 ','9999-12-31 23:59:59.00');
+insert into LDAPUser values('1573291','43558','acme\DavidThomas','David.Thomas@acme.com','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('1573292','43558','acme\ShaneWarwick ','Shane.Warwick@acme.com ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('1573293','43558','acme\JamesMitchell  ','James.Mitchell@acme.com   ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('1573294','43558','acme\MartinSmith   ','Martin.Smith@acme.com   ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('1573295','43558','acme\BenCowgill   ','Ben.Cowgill@acme.com     ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('1573296','43558','acme\LauraGrant','Laura.Grant@acme.com   ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('2761328  ','43558','acme-germany\MartinSmith ','Martin.Smith@acme-germany.com   ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('2761329  ','43558','acme-japan\LauraGrant ','Laura.Grant@acme-japan.com  ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('2761330','43558','acme-uk\CorrineAllen  ','Corrine.Allen@acme-uk.com  ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('2761331  ','43558','acme-us\BenCowgill   ','Ben.Cowgill@acme-us.com  ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('4576905  ','37549 ','cnet1\apatwardhan  ','James.Mitchell@acme.com   ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('4576908  ','37549 ','cnet1\zpadia   ','localdonotprotect@qatestdomain2.com ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('4576911','37549 ','cnet1\spickard1  ','localdonotprotect@qatestdomain3.com   ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('4576912','37549 ','cnet1\spickard2  ','test4@symantec.com   ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('4576913','37549 ','cnet1\spickard3  ','test5@symantec.com   ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('4576914','37549 ','cnet1\spickard4  ','test6@symantec.com    ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('4576915','43558','cnet1\spickard5  ','test7@symantec.com    ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('4576916','43558','cnet1\spickard6  ','test8@symantec.com    ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('4576917','43558','cnet1\spickard7  ','test9@symantec.com   ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('4576918','43558','cnet1\spickard8  ','test10@symantec.com    ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('4576919','43558','cnet1\spickard9  ','test11@symantec.com    ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('4576920','43558','cnet1\spickard10  ','test12@symantec.com    ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUser values('4576921','43558','cnet1\spickard11 ','test13@symantec.com  ','9999-12-31 23:59:59.000','-1');
+insert into LDAPUserAlias values('1573291','1573291','David.Thomas2@acme.com ' ,'9999-12-31 23:59:59.000');
+insert into LDAPUserAlias values('1573292','1573292','Shane.Warwick2@acme.com   ' ,'9999-12-31 23:59:59.000');
+insert into LDAPUserAlias values('1573293','1573293','James.Mitchell2@acme.com ' ,'9999-12-31 23:59:59.000');
+insert into LDAPUserAlias values('1573294','1573294','Martin.Smith2@acme.com ' ,'9999-12-31 23:59:59.000');
+insert into LDAPUserAlias values('1573295','1573295','Ben.Cowgill2@acme.com  ' ,'9999-12-31 23:59:59.000');
+insert into LDAPUserAlias values('1573296','1573296','Laura.Grant2@acme.com   ' ,'9999-12-31 23:59:59.000');
+insert into LDAPUserAlias values('2761328','2761328','Martin.Smith2@acme-germany.com ' ,'9999-12-31 23:59:59.000');
+insert into LDAPUserAlias values('2761329','2761329','Laura.Grant2@acme-japan.com' ,'9999-12-31 23:59:59.000');
+insert into LDAPUserAlias values('2761330','2761330','Corrine.Allen2@acme-uk.com  ' ,'9999-12-31 23:59:59.000');
+insert into LDAPUserAlias values('2761331','2761331','Ben.Cowgill2@acme-us.com' ,'9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('21539075','1573291' ,'617341','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('21539076','1573292' ,'617341','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('21539077','1573293' ,'617341','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('21539078','1573294' ,'617341','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('21539079','1573295' ,'617341','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('21539080','1573296' ,'617342','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('35997154  ','2761328' ,'1103976','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('35997155','2761329' ,'1103977','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('35997156','2761330' ,'1103978','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('35997157','2761331' ,'1103979','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('82135417  ','4576905 ' ,'1602359 ','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('82135425 ','4576908' ,'1602359 ','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('82135775 ','4576905 ' ,'1602370','False','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('82135777 ','4576908' ,'1602370','False','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('82135778','4576911' ,'1602370','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('1','1573291' ,'1602366','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('3','1573291' ,'1602365','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('6','1573291' ,'1602368','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('9','1573291' ,'1602385','True','9999-12-31 23:59:59.000');
+insert into CustomerConfigHosts values('1','11209','1','195.216.005.176','255.255.255.240','3285714352','3285714367','2017-10-20 16:11:17','2017-10-20 16:11:17','9999-12-31 23:59:59.000','Test','Test Host','','1','','1','2017-10-20 16:11:17.693','');
+insert into CustomerConfigHosts values('2','23464','1','195.216.005.176','255.255.255.240','3285714352','3285714367','2017-10-20 16:11:17','2017-10-20 16:11:17','9999-12-31 23:59:59.000','Test','Test Host','','1','','1','2017-10-20 16:11:17.693','');
+insert into dbo."CTPAction" values ('1','Allow','2016-01-01 14:30:10.920','2016-01-01 14:30:10.920','InitialLoad','InitialLoad');
+insert into dbo."CTPAction" values ('2','Block','2016-01-01 14:30:10.920','2016-01-01 14:30:10.920','InitialLoad','InitialLoad');
+insert into dbo."CTPAction" values ('3','Warn','2016-01-01 14:30:10.920','2016-01-01 14:30:10.920','InitialLoad','InitialLoad');
+insert into dbo."CTPRewriteExclusionType" values ('1','Domain','2016-01-01 14:30:10.920','2016-01-01 14:30:10.920','InitialLoad','InitialLoad');
+insert into dbo."CTPRewriteExclusionType" values ('2','Email','2016-01-01 14:30:10.920','2016-01-01 14:30:10.920','InitialLoad','InitialLoad');
+insert into dbo."CTPRewriteExclusionType" values ('3','URL','2016-01-01 14:30:10.920','2016-01-01 14:30:10.920','InitialLoad','InitialLoad');
+insert into dbo."CTPRewriteExclusionType" values ('4','IP','2016-01-01 14:30:10.920','2016-01-01 14:30:10.920','InitialLoad','InitialLoad');
+insert into dbo."AllDomains" values (900003,'test-get-smtp-routes-03.com',10003,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900004,'test-get-smtp-routes-04.com',10004,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900005,'test-get-smtp-routes-05.com',10005,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900006,'test-get-smtp-routes-06.com',10006,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900007,'test-get-smtp-routes-07.com',10007,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900008,'test-get-smtp-routes-08.com',10008,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900009,'test-get-smtp-routes-09.com',10009,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900010,'test-get-smtp-routes-10.com',10010,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900011,'test-get-smtp-routes-11.com',10011,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900012,'test-get-smtp-routes-12.com',10012,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900013,'test-get-smtp-routes-13.com',10013,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900014,'test-get-smtp-routes-14.com',10014,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900015,'test-get-smtp-routes-15.com',10015,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900016,'test-get-smtp-routes-16.com',10016,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900017,'test-get-smtp-routes-17.com',10017,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900018,'test-get-smtp-routes-18.com',10018,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900019,'test-get-smtp-routes-19.com',10019,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900020,'test-get-smtp-routes-20.com',10020,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900021,'test-get-smtp-routes-21.com',10021,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900022,'test-get-smtp-routes-22.com',10022,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900023,'test-get-smtp-routes-23.com',10023,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900024,'test-get-smtp-routes-24.com',10024,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900025,'test-get-smtp-routes-25.com',10025,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900026,'test-get-smtp-routes-26.com',10026,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900027,'test-get-smtp-routes-27.com',10027,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900028,'test-get-smtp-routes-28.com',10028,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900029,'test-get-smtp-routes-29.com',10029,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900030,'test-get-smtp-routes-30.com',10030,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900031,'test-get-smtp-routes-31.com',10031,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900032,'test-get-smtp-routes-32.com',10032,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900033,'test-get-smtp-routes-33.com',10033,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900034,'test-get-smtp-routes-34.com',10034,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900035,'test-get-smtp-routes-35.com',10035,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900036,'test-get-smtp-routes-36.com',10036,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900037,'test-get-smtp-routes-37.com',10037,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900038,'test-get-smtp-routes-38.com',10038,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900039,'test-get-smtp-routes-39.com',10039,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (900040,'test-get-smtp-routes-40-1.com',10040,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (9000402,'test-get-smtp-routes-40-2.com',10040,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (9000411,'test-get-smtp-routes-41-1.com',10041,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."AllDomains" values (9000412,'test-get-smtp-routes-41-2.com',10041,'2001-04-30 16:09:35.657','2004-11-05 09:12:52.010',NULL,'saravanan_s','INSIGHT02','N');
+insert into dbo."CustomerConfigDefault" values (10003,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10005,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10006,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10007,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10004,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10008,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10009,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10010,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10011,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10012,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa',',INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10015,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10016,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10017,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10018,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10019,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10020,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10021,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10022,'Test@test.com','Y','Out','Y','In',0,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10023,'Test@test.com','Y','Out','Y','In',0,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10024,'Test@test.com','Y','Out','Y','In',0,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10025,'Test@test.com','Y','Out','Y','In',0,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10026,'Test@test.com','Y','Out','Y','In',0,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10027,'Test@test.com','Y','Out','Y','In',0,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10040,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."CustomerConfigDefault" values (10041,'Test@test.com','Y','Out','Y','In',1,'N','Disclaimer',32,24,NULL,NULL,7,0,4,'N','Y','N','OBOOPS','2000-06-02 14:41:14.700','2011-04-08 08:54:38.617','9999-12-31 23:59:59.000','sa','INSIGHT2','Y','Y');
+insert into dbo."Customers" values (10003,'S',NULL,11209,'SmtpRoutes3','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10004,'S',NULL,11209,'SmtpRoutes4','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10005,'S',NULL,11209,'SmtpRoutes5','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10006,'S',NULL,11209,'SmtpRoutes6','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10008,'L',NULL,11209,'SmtpRoutes8','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10009,'L',NULL,11209,'SmtpRoutes9','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10007,'A',NULL,11209,'SmtpRoutes7','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10010,'L',NULL,11209,'SmtpRoutes10','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10011,'L',NULL,11209,'SmtpRoutes11','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10012,'L',NULL,11209,'SmtpRoutes12','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10013,'L',NULL,11209,'SmtpRoutes13','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10014,'L',NULL,11209,'SmtpRoutes14','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10015,'L',NULL,11209,'SmtpRoutes15','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10016,'L',NULL,11209,'SmtpRoutes16','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10017,'L',NULL,11209,'SmtpRoutes17','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10018,'L',NULL,11209,'SmtpRoutes18','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10019,'L',NULL,11209,'SmtpRoutes19','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10020,'L',NULL,11209,'SmtpRoutes20','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10021,'L',NULL,11209,'SmtpRoutes21','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10022,'L',NULL,11209,'SmtpRoutes22','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10023,'L',NULL,11209,'SmtpRoutes23','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10025,'L',NULL,11209,'SmtpRoutes25','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10026,'L',NULL,11209,'SmtpRoutes26','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10027,'L',NULL,11209,'SmtpRoutes27','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10028,'L',NULL,11209,'SmtpRoutes28','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10029,'L',NULL,11209,'SmtpRoutes29','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10030,'L',NULL,11209,'SmtpRoutes30','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10031,'L',NULL,11209,'SmtpRoutes31','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10032,'L',NULL,11209,'SmtpRoutes32','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10033,'L',NULL,11209,'SmtpRoutes33','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10034,'L',NULL,11209,'SmtpRoutes34','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10035,'L',NULL,11209,'SmtpRoutes35','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10036,'L',NULL,11209,'SmtpRoutes36','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10037,'L',NULL,11209,'SmtpRoutes37','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10038,'L',NULL,11209,'SmtpRoutes38','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10039,'L',NULL,11209,'SmtpRoutes39','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10040,'L',NULL,11209,'SmtpRoutes40','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."Customers" values (10041,'L',NULL,11209,'SmtpRoutes41','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into dbo."DomainConfigDefault" values (900004,'Y','N','Y',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900005,'Y','N','N',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900006,'Y','N','N',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900007,'Y','N','N',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900009,'Y','N','Y',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900010,'Y','N','N',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900011,'Y','N','Y',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900012,'Y','N','Y',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900013,'Y','N','N',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (900014,'Y','N','Y',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900015,'Y','N','N',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (900016,'Y','N','N',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900017,'Y','N','N',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900018,'Y','N','N',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900019,'Y','N','Y',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900020,'Y','N','Y',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900021,'Y','N','Y',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900022,'Y','N','N',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900023,'Y','N','N',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900003,'Y','N','Y',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900024,'Y','N','N',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900025,'Y','N','Y',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900026,'Y','N','Y',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900027,'Y','N','Y',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (900028,'Y','N','N',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (900029,'Y','N','N',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (900030,'Y','N','N',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (900031,'Y','N','Y',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (900032,'Y','N','Y',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (900033,'Y','N','Y',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (900034,'Y','N','N',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (900035,'Y','N','N',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (900036,'Y','N','N',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (900037,'Y','N','Y',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (900038,'Y','N','Y',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (900039,'Y','N','Y',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (9000412,'Y','N','N',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (9000402,'Y','N','Y',NULL,'N','Y');
+insert into dbo."DomainConfigDefault" values (9000401,'Y','N','Y',NULL,'Y','Y');
+insert into dbo."DomainConfigDefault" values (9000411,'Y','N','N',NULL,'Y','Y');
+insert into dbo."SMTPRoutes" values (70001,10003,NULL,'default.smtp.routes.03 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70002,10003,900003,'domain.smtp.routes.03',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70003,10004,NULL,'default.smtp.routes.04 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70004,10004,900004,'domain.smtp.routes.04',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70005,10005,NULL,'default.smtp.routes.05 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70006,10005,900005,'domain.smtp.routes.05',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70007,10006,NULL,'default.smtp.routes.06 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70008,10006,900006,'domain.smtp.routes.06',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70009,10007,NULL,'default.smtp.routes.07 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70010,10007,900007,'domain.smtp.routes.07',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70011,10008,NULL,'domain.smtp.routes.08  ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70012,10008,900008,'domain.smtp.routes.08',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70013,10009,NULL,'default.smtp.routes.09 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,0,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70014,10009,900009,'domain.smtp.routes.09',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,0,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70015,10010,NULL,'default.smtp.routes.10 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70016,10010,900010,'domain.smtp.routes.10',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70017,10012,NULL,'default.smtp.routes.12 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70018,10012,900012,'domain.smtp.routes.12',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70019,10013,NULL,'default.smtp.routes.13 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70020,10013,900013,'domain.smtp.routes.13',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70021,10014,NULL,'default.smtp.routes.14 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70022,10014,900014,'domain.smtp.routes.14',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70023,10015,NULL,'default.smtp.routes.15 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70024,10015,900015,'domain.smtp.routes.15',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70025,10016,NULL,'default.smtp.routes.16 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70026,10016,900016,'domain.smtp.routes.16',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70027,10017,900017,'domain.smtp.routes.17',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70028,10018,NULL,'default.smtp.routes.18 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70029,10019,NULL,'default.smtp.routes.19 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70030,10019,900019,'domain.smtp.routes.19',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70031,10020,900020,'domain.smtp.routes.20',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70032,10021,NULL,'default.smtp.routes.21 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70033,10022,NULL,'default.smtp.routes.22 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70034,10022,900022,'domain.smtp.routes.22',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70035,10023,900023,'domain.smtp.routes.23',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70036,10024,NULL,'default.smtp.routes.24 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70037,10025,NULL,'default.smtp.routes.25 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70038,10025,900025,'domain.smtp.routes.25',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70039,10026,900026,'domain.smtp.routes.26',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70040,10027,NULL,'default.smtp.routes.27 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70041,10028,NULL,'default.smtp.routes.28 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70042,10028,900028,'domain.smtp.routes.28',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70043,10029,900029,'domain.smtp.routes.29',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70044,10030,NULL,'default.smtp.routes.30 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70045,10031,NULL,'default.smtp.routes.31 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70046,10031,900031,'domain.smtp.routes.31',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70047,10032,900032,'domain.smtp.routes.32',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70048,10033,NULL,'default.smtp.routes.33 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70049,10034,NULL,'default.smtp.routes.34 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70050,10034,900034,'domain.smtp.routes.34',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70051,10035,900035,'domain.smtp.routes.35',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70052,10036,NULL,'default.smtp.routes.36 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70053,10037,NULL,'default.smtp.routes.37 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70054,10037,900037,'domain.smtp.routes.37',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70055,10038,900038,'domain.smtp.routes.38',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70056,10039,NULL,'default.smtp.routes.39 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70057,10040,NULL,'[40.40.40.3]',3,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70058,10040,NULL,'default.smtp.routes.40-3X',3,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,0,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70059,10040,NULL,'default.smtp.routes.40-2 ',2,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70060,10040,NULL,'default.smtp.routes.40-1 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70061,10040,NULL,'default.smtp.routes.40-1X',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,0,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70062,10040,NULL,'default.smtp.routes.40-2X',2,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,0,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70063,10040,9000401,'domain.smtp.routes.401-1 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70064,10040,9000401,'domain.smtp.routes.401-2 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,0,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70065,10041,NULL,'default.smtp.routes.41-1 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70066,10041,NULL,'default.smtp.routes.40-1X',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,0,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70067,10041,9000411,'domain.smtp.routes.411-1 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70068,10041,9000411,'domain.smtp.routes.411-2 ',2,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70069,10041,9000411,'domain.smtp.routes.411-3 ',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,0,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70070,10041,9000412,'[412.41.0.3]',2,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70071,10041,9000412,'[412.41.0.2]',3,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70072,10041,9000412,'[412.41.0.2X]',3,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,0,NULL,1,NULL,NULL);
+insert into dbo."SMTPRoutes" values (70073,10041,9000412,'[412.41.0.1]',1,'2006-08-18 16:08:40.810','2006-08-18 16:08:40.810','9999-12-31 23:59:59.000','tstuser','INSIGHT02',NULL,1,NULL,1,NULL,NULL);
+insert into TLS values ('1','10024',NULL,'E' ,'E ','false' ,'2014-10-01' ,'2014-10-02', 'test','test1');
+insert into TLS values ('2','10024','20369','o' ,'o ','false' ,'2014-10-01' ,'2014-10-02', 'test','test1');
+insert into TLS values ('3','10024','20370','o' ,'o ','true' ,'2014-10-01' ,'2014-10-02', 'test','test1');
+insert into TLS values ('4','11209',NULL,'o' ,'o','false' ,'2014-10-01' ,'2014-10-02', 'test','test1');
+insert into TLSCNOverride values('301','20369','cn1','2014-10-01' ,'2014-10-02' ,'test','test1');
+insert into TLSCNOverride values('311','20369','cn2','2014-10-01' ,'2014-10-02' ,'test','test1');
+insert into TLSDomainLevelConfig values('20369','','p1','true','0','2014-10-01','2014-10-02','test','test1');
+insert into TLSDomainLevelConfig values('20370','static','','false','0','2014-10-01','2014-10-02','test','test1');
+insert into TLSPartnerCNOverride values('31','21','cn','2014-10-01','2014-10-02','test','test1');
+insert into TLSPartnerCNOverride values('32','21','cn2','2014-10-01','2014-10-02','test','test1');
+insert into TLSPartnerCNOverride values('33','22','cn3','2014-10-01','2014-10-02','test','test1');
+insert into TLSPartnerCNOverride values('34','24','cn4','2014-10-01','2014-10-02','test','test1');
+insert into TLSPartnerDomain values('21','10024' ,'dom1.com','','True','111','False','0','2014-10-01','2014-10-02','test','test1');
+insert into TLSPartnerDomain values('22','10024' ,'dom2.com','','True','111','False','0','2014-10-01','2014-10-02','test','test1');
+insert into TLSPartnerDomain values('23','10024' ,'dom3.com','','True','222','False','0','2014-10-01','2014-10-02','test','test1');
+insert into TLSPartnerDomain values('24','10024' ,'dom4.com','','True','333','False','0','2014-10-01','2014-10-02','test','test1');
+insert into dbo."TLSPartnerDomainGroup" values('11','111','sachinn','0','2014-10-01','2014-10-02' ,'test','test1');
+insert into dbo."TLSPartnerDomainGroup" values('22','222','sachinn','0','2014-10-01','2014-10-02' ,'test','test1');
+insert into dbo."TLSPartnerDomainGroup" values('44','333','sachinn','0','2014-10-01','2014-10-02' ,'test','test1');
+insert into TLSPartnerDomainGroup values('111','10024','test1','false','2014-10-01','2014-10-02','test','test1');
+insert into TLSPartnerDomainGroup values('222','10024','test2','false','2014-10-01','2014-10-02','test','test1');
+insert into TLSPartnerDomainGroup values('333','11209','test3','false','2014-10-01','2014-10-02','test','test1');
+insert into TLSPartnerSubdomainExclusion values('41','21','sub.dom1.com','2014-10-01' ,'2014-10-02','test','test1');
+insert into TLSPartnerSubdomainExclusion values('42','21','bub.dom1.com','2014-10-01' ,'2014-10-02','test','test1');
+insert into TLSPartnerSubdomainExclusion values('43','22','sub.dom2.com','2014-10-01' ,'2014-10-02','test','test1');
+insert into TLSPartnerSubdomainExclusion values('44','23','sub.dom1.com','2014-10-01' ,'2014-10-02','test','test1');
+insert into TLSSubdomainExclusion values('201','20369','s1.radiob.star.co.uk' ,'2014-10-01' ,'2014-10-02' ,'test','test1');
+insert into TLSSubdomainExclusion values('211','20369','s2.radiob.star.co.uk' ,'2014-10-01' ,'2014-10-02' ,'test','test1');
+insert into TLSSubdomainExclusion values('221','20369','s3.radiob.star.co.uk' ,'2014-10-01' ,'2014-10-02' ,'test','test1');
+insert into TLSSubdomainExclusion values('231','20370','s.radiob.star.co.uk' ,'2014-10-01' ,'2014-10-02' ,'test','test1');
+
+-- Changes Made for below inserts
+insert into dbo."ETIAttachmentSettings" values('351','11209','8','False','True','True',' 14 ','True','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False');      
+
+
+set identity_insert dbo."CustomerConfig" ON
+insert into dbo."customerConfig" (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(39364,37549,120520,0,'N','Y','N','N','Y','_','Y','_','_','admin@qatestdomain2.com','N',1,1,'_ ','_','_ ',7,0,4,1,'Y','Y ','_ ','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig" (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(39726,37549,120521,0,'N','Y','N','N','Y','_','Y','_','_','admin@qatestdomain3.com','N',0,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig" (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(3471  ,10024,20369 ,0,'N','Y','Y','N','N','_','N','_','_','avadmin@client.com     ','N',1,1,'_','_','_',7,0,4,1,'Y','N','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig" (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(20959 ,10024,32947 ,0,'N','Y','Y','N','Y','_','Y','_','_','avadmin@client.com     ','N',1,1,'_','_','_',7,0,4,1,'Y','N','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig" (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(3472  ,10024,20370 ,0,'N','Y','Y','N','Y','_','Y','_','_','avadmin@client.com     ','N',1,1,'_','_','_',7,0,4,1,'Y','N','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig" (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(15932 ,10024,27911 ,0,'N','Y','Y','N','N','_','Y','_','_','test@test.com          ','N',1,1,'_','_','_',7,0,4,1,'Y','N','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig" (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(491   ,10024,11285 ,0,'N','Y','Y','Y','Y','_','Y','_','_','test@test.com          ','N',1,1,'_','_','_',7,0,4,1,'Y','N','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig" (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(36243 ,10024,47819 ,0,'N','Y','Y','N','Y','_','Y','_','_','avadmin@client.com     ','N',1,1,'_','_','_',7,0,4,1,'Y','N','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig" (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(43961 ,10024,55471 ,0,'N','Y','Y','N','N','_','N','_','_','avadmin@client.com     ','N',1,1,'_','_','_',7,0,4,1,'Y','N','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig" (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(120873,10024,133663,0,'N','Y','Y','N','Y','_','Y','_','_','support@messagelabs.com','N',1,1,'_','_','_',7,0,4,1,'Y','N','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig" (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(47724 ,10024,59224 ,0,'N','Y','Y','N','Y','_','Y','_','_','admin@testdomain.com   ','N',1,1,'_','_','_',7,0,4,1,'N','N','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig" (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(167052,10024,182342,0,'N','Y','Y','N','Y','_','Y','_','_','avadmin@client.com     ','N',1,1,'_','_','_',7,0,4,1,'Y','N','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig" (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(268162,10024,284913,0,'N','Y','Y','N','Y','_','Y','_','_','avadmin@client.com     ','N',0,1,'_','_','_',7,0,4,1,'N','N','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig" (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(1     ,11209,11001 ,0,'N','Y','Y','N','Y','_','Y','_','_','admin@messagelabs.net  ','N',1,1,'_','_','_',7,0,4,1,'Y','N','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+-- New Custoemr Config Added with some changes
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(39365,37549,120522,0,'N ','Y ','N ','N ','Y ','_','Y','_','_','admin@qatestdomain2.com','N',1,1,'_ ','_','_ ',7,0,4 ,1,'Y','Y ','_ ','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(2,11209,11002 ,0,'N ','Y ','Y ','N ','Y ','_','Y','_','_','admin@messagelabs.net','N',1,1,'_ ','_','_ ',7,0,4 ,1,'Y','N ','_ ','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80002,10014,900014, 0,'N','Y','N','N','Y','__','Y','_','_','admin@test.com','N',1,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80003,10028,900028, 0,'N','Y','N','N','Y','__','Y','_','_','admin@test.com','N',1,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80004,10029,900029, 0,'N','Y','N','N','Y','__','Y','_','_','admin@test.com','N',1,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80005,10030,900030, 0,'N','Y','N','N','Y','__','Y','_','_','admin@test.com','N',1,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80006,10031,900031, 0,'N','Y','N','N','Y','__','Y','_','_','admin@test.com','N',1,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80007,10032,900032, 0,'N','Y','N','N','Y','__','Y','_','_','admin@test.com','N',1,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80008,10033,900033, 0,'N','Y','N','N','Y','__','Y','_','_','admin@test.com','N',1,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80009,10034,900034, 0,'N','Y','N','N','Y','__','Y','_','_','admin@test.com','N',0,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80010,10035,900035, 0,'N','Y','N','N','Y','__','Y','_','_','admin@test.com','N',0,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80011,10036,900036, 0,'N','Y','N','N','Y','__','Y','_','_','admin@test.com','N',0,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80012,10037,900037, 0,'N','Y','N','N','Y','__','Y','_','_','admin@test.com','N',0,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80013,10038,900038, 0,'N','Y','N','N','Y','__','Y','_','_','admin@test.com','N',0,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80014,10039,900039, 0,'N','Y','N','N','Y','__','Y','_','_','admin@test.com','N',0,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80015,10040,9000402,0,'N','Y','N','N','Y','_','Y','_','_','admin@test.com','N', 1,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+insert into dbo."customerConfig"  (CustomerConfigId ,CustomerId ,DomainId ,DomainNumberOfUsers ,CheckUs_BrandMe ,CheckUs_AppendCheckedTitle ,CheckUs_CheckVirus ,CheckUs_WarnOutbound ,CheckUs_BannerOnOutbound ,CheckUs_Banner ,BannerText ,CheckUs_BannerOnInbound ,CheckUs_InBoundBanner ,InBoundBannerText ,CheckUs_Email ,CheckUs_StopWordMacro ,smtproutes_WildCard ,CheckUs_AppendDisclaimer ,CheckUs_Disclaimer ,disclaimerText ,CheckUs_customMessageDir ,DaysToRetry ,MaxRetryWarnings ,HoursBetweenWarnings ,InboundNoSenderOops ,InboundNoRecipientOops ,OutboundNoSenderOops ,OutboundOopsEmailAddress ,DateCreated ,DateAmended ,DateDeleted ,WhoAmended_nt_username ,WhoAmended_hostname ,InboundNoAdminOops ,OutboundNoAdminOops)
+values(80016,10041,9000412,0,'N','Y','N','N','Y','_','Y','_','_','admin@test.com','N', 1,1,'_','_','_',7,0,4,1,'Y','Y','_','Y','2004-02-13 16:34:50.730','2006-09-14 13:28:06.787','9999-12-31 23:59:59.000','InsightUser','INSIGHT2','Y','Y');
+set identity_insert dbo."CustomerConfig" Off
+
+insert into dbo."Customers" values (10052,'L',NULL,11209,'SmtpRoutes52','RADIO0',5,'RADIO0','demo0','password;1','_','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N',0,'en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753');
+insert into CustomDSNWarningSchedule values('11','7','75', 'o ','2019-01-08','2014-10-01','9999-12-31 23:59:59.000','test','test1');	
+insert into ETIAttachmentSettings values('331','11210','7','False','True','True',' 14 ','True','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False');
+insert into LDAPUserGroupMembership values('2','1573292' ,'1602366','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('4','1573292' ,'1602365','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('7','1573292' ,'1602368','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('10','1573292' ,'1602385','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('5','1573293' ,'1602365','True','9999-12-31 23:59:59.000');
+insert into LDAPUserGroupMembership values('8','1573294' ,'1602365','True','9999-12-31 23:59:59.000');
+insert into dbo."ServiceSpamGlobalWBList" values ('4192bff0-e1e0-43ce-a4db-912808c32493','W','I','195.216.005.101','Echoworx IP','2017-10-20 16:11:17','2017-10-20 16:11:17','9999-12-31 23:59:59.000','Test','Test Host');
+
+
+--CHANGED PARAMETERS:
+insert into dbo."AutoRemediationSettings" values ('11209','2','N','Y','Y','admin@messagelabs.net','1','','2017-10-20','2017-10-20','arulkumar_a','localhost','2','junk','0');
+insert into dbo."CTPEmailList" values ('5','11209','','localprotecteduser1@messagelabs.co.uk','True','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','');
+insert into dbo."CTPEmailList" values ('6','11209','','localprotecteduser2@messagelabs.co.uk','True','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','');
+insert into dbo."CTPEmailList" values ('7','37549','','localdonotprotecteduser1@ssip-qatest.swr','False','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','');
+insert into dbo."CTPEmailList" values ('8','37549','','localdonotprotecteduser2@ssip-qatest.swr','False','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','False','');
+insert into dbo."CTPEmailList" values ('9','37549','','','False','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','True','');
+insert into dbo."CTPEmailList" values ('10','37549','','','True','2018-11-09 11:40:20.583','2018-11-09 11:40:20.583','initial load','initial load','True','');
+insert into dbo."CTPService" values ('1','-1',NULL,'0','N','0','0','0','0','1','0','1','2016-01-27 18:17:55.963','2016-01-27 18:17:55.963','Initial Load','Initial Load','1','0');
+insert into dbo."CTPService" values ('2','11209',NULL,'1','N','0','0','0','0','1','0','3','2016-01-27 18:17:55.963','2016-01-27 18:17:55.963','User=1','L-241342-P13','1','0');
+insert into dbo."CTPService" values ('3','11209','11000','1','N','0','0','0','0','1','0','3','2016-01-27 18:17:55.963','2016-01-27 18:17:55.963','User=1','L-241342-P13','0','0');
+insert into dbo."CTPService" values ('4','11209','11001','1','Y','0','0','0','0','1','0','3','2016-01-27 18:17:55.963','2016-01-27 18:17:55.963','User=1','L-241342-P13','1','0');
+insert into dbo."CTPService" values ('5','10024',NULL,'1','N','0','0','0','0','1','0','3','2016-01-27 18:17:55.963','2016-01-27 18:17:55.963','User=1','L-241342-P13','1','0');
+insert into dbo."CTPService" values ('6','10024','27911','1','N','0','0','0','0','1','0','3','2016-01-27 18:17:55.963','2016-01-27 18:17:55.963','User=1','L-241342-P13','1','0');
+insert into dbo."CTPService" values ('7','37549',NULL,'1','N','0','0','0','0','1','0','3','2016-01-27 18:17:55.963','2016-01-27 18:17:55.963','User=1','L-241342-P13','0','0');
+insert into dbo."CTPService" values ('8','37549','158045','1','N','0','0','0','0','1','0','3','2016-01-27 18:17:55.963','2016-01-27 18:17:55.963','User=1','L-241342-P13','1','0');
+insert into dbo."CTPService" values ('9','37549','120520','1','N','0','0','0','0','1','0','3','2016-01-27 18:17:55.963','2016-01-27 18:17:55.963','User=1','L-241342-P13','1','1');
+insert into dbo."CTPService" values ('10','37549','120521','1','N','0','0','0','0','1','0','3','2016-01-27 18:17:55.963','2016-01-27 18:17:55.963','User=1','L-241342-P13','0','1');
+insert into Customers values('10024','L',NULL,'11209','ClientNet Demo','RADIO0','5','RADIO0','demo0','password;1','mishelp@uk.uu.net;karl.meyer@uk.uu.net','2000-03-25 08:29:27.217','2010-05-20 07:09:54.857','9999-12-31 23:59:59.000','User=141044','INSIGHT2','N','0','en-US','9C3AF50A-6A47-4BEB-9F2B-7281D4411753'       );
+insert into Customers values('11209','L',NULL,'11209','MessageLab','STA145 ','0','STA145','STA145','password;1','mishelp@uk.uu.net;karl.meyer@uk.uu.net','2000-03-25 08:29:27.217','2010-05-14 19:49:25.167','9999-12-31 23:59:59.000','acharrett','INSIGHT2','N','0','en-US','190A8380-5B5B-49B2-AD87-32FDF70E7277'           );
+insert into Customers values('37549','L',NULL,'40421','QA Test Customer','QAT6101','10','_','QAT6101','password;1','mishelp@uk.uu.net;karl.meyer@uk.uu.net','2007-05-10 10:19:29.600','2009-08-22 15:47:05.197','9999-12-31 23:59:59.000','User=138111','INSIGHT2','N','0','en-US','3A8F326C-D884-4F6E-9013-DAE72FB4918A'      );
+insert into Customers values('40421','L',NULL,'11209','QA Reseller','QAR8176','0','_','QAR8176','password;1','mishelp@uk.uu.net;karl.meyer@uk.uu.net','2007-10-04 16:24:38.000','2009-08-22 16:09:30.117','9999-12-31 23:59:59.000','User=143665','INSIGHT2','N','0','en-US','C57F8273-9225-4D40-8E01-B7159E956B5D'            );
+insert into Customers values('43558','L',NULL,'55344','MessageLabs Demo','MES1392','25','_','MES1392','password;1','mishelp@uk.uu.net;karl.meyer@uk.uu.net','2008-03-10 10:46:07.323','2010-05-03 23:22:09.327','9999-12-31 23:59:59.000','User=184958','INSIGHT2','N','0','en-US','B5A0CF66-AD19-4018-8460-3FFB48A7B585'      );
+insert into Customers values('55344','L',NULL,'10024','Test Partner','TES1026','0','_','TES1026','password;1','mishelp@uk.uu.net;karl.meyer@uk.uu.net','2009-12-03 13:00:02.347','2009-12-03 13:00:18.127','9999-12-31 23:59:59.000','jheritage','Unknown','N','0','en-US','D648EB21-120C-4A31-BDA6-38FB9B3CF913'              );
+insert into Customers values('87673','L',NULL,'11209','Symantec eStore','SYM8772','0','_','SYM8772','password;1','mishelp@uk.uu.net;karl.meyer@uk.uu.net','2011-01-12 10:40:09.687','2011-01-28 12:53:35.973','9999-12-31 23:59:59.000','getheridge','Unknown','N','0','en-US','F176BDA0-0414-486C-B429-2E6290AD9CD6'          );
+insert into Customers values('87777','L',NULL,'87673','eStore Customer','EST772','0','_','EST772','password;1','mishelp@uk.uu.net;karl.meyer@uk.uu.net','2011-01-12 10:40:09.687','2011-01-28 12:53:35.973','9999-12-31 23:59:59.000','getheridge','Unknown','N','0','en-US','F176BDA0-0414-486C-B429-2E6290AD9CD7'            );
+insert into Customers values('23464','L',NULL,'11209','Hosted Customer','HST772','0','_','HST772','password;1','mishelp@uk.uu.net;karl.meyer@uk.uu.net','2017-10-20 10:40:09.687','2017-10-20 12:53:35.973','9999-12-31 23:59:59.000','Test','Unknown','N','0','en-US','F176BDA0-0414-486C-B429-2E6290AD9CD8'                  );
+
+insert into TLSEnforcement values('11','1','0','1','1','1','2014-10-01' ,'2014-10-02' ,'test','test1');
+insert into TLSEnforcement values('22','2','0','1','1','1','2014-10-01' ,'2014-10-02' ,'test','test1');
+insert into TLSEnforcement values('33','2','0','1','1','1','2014-10-01' ,'2014-10-02' ,'test','test1');
+insert into TLSEnforcement values('44','4','0','1','1','1','2014-10-01' ,'2014-10-02' ,'test','test1');
+
+
